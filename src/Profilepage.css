@@ -1,0 +1,101 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #27374D;
+  color: #DDE6ED;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.main-container-2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.profile-wrapper {
+  max-width: 900px;
+  width: 100%;
+  padding: 20px;
+}
+
+.profile-card {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.profile-content {
+  display: flex;
+  flex-direction: row;
+  background-color: #9DB2BF;
+  border: 1px solid #526D82;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+.profile-form {
+  flex: 2;
+  background-color: #9DB2BF;
+  padding: 30px;
+}
+
+.profile-summary {
+  flex: 1;
+  background-color: #9DB2BF;
+  padding: 30px;
+}
+
+.profile-summary {
+  flex: 1;
+  background-color: #9DB2BF;
+  padding: 30px;
+  border-left: 1px solid #526D82;
+}
+
+.profile-summary h6,
+.profile-summary p,
+.profile-form h3,
+.profile-form p,
+.profile-form label {
+  color: #526D82;
+}
+
+hr {
+  border-color: #526D82;
+}
+
+button.btn-primary {
+  background-color: #1e88e5;
+  border: none;
+  transition: background 0.3s;
+}
+
+button.btn-primary:hover {
+  background-color: #1565c0;
+}
+
+button.btn-danger {
+  background-color: #e53935;
+  border: none;
+  transition: background 0.3s;
+}
+
+button.btn-danger:hover {
+  background-color: #c62828;
+}
+
+.form-control {
+  background-color: #9DB2BF;
+  color: #526D82;
+  border: 1px solid #526D82;
+}
+
+.form-control:focus {
+  background-color: #9DB2BF;
+  border-color: #1e88e5;
+  box-shadow: none;
+  color: #526D82;
+}
