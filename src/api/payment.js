@@ -1,10 +1,17 @@
 // api/payment.js
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_PAYMENT_BASEURL; 
-// EJ: http://56.228.34.53:8083/api/payments
+// El .env entrega solo el host/puerto
+// Ej: http://56.228.34.53:8083
+const base = import.meta.env.VITE_PAYMENT_BASEURL;
 
-export const paymentApi = axios.create({ baseURL });
+// Agregamos la ruta real del controller
+// Resultado final: http://56.228.34.53:8083/api/payments
+const paymentApi = axios.create({
+  baseURL: base + "/api/payments"
+});
+
+// --- ENDPOINTS ---
 
 export async function checkout(payload) {
   const { data } = await paymentApi.post("/checkout", payload);

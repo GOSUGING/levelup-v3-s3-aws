@@ -1,12 +1,13 @@
 // src/pages/ProfilePage.jsx
 import React, { useContext, useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Form, Button, Alert, Spinner } from "react-bootstrap";
 import { AuthContext } from "../context/AuthContext";
 import "../Profilepage.css";
 
 export default function ProfilePage() {
   const { user, updateProfile, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState(""); // read-only
@@ -34,7 +35,6 @@ export default function ProfilePage() {
   const validate = () => {
     const e = {};
     if (!name || name.trim().length < 2) e.name = "Nombre muy corto";
-    // email se muestra, pero no se edita aquí
     return e;
   };
 
@@ -49,7 +49,6 @@ export default function ProfilePage() {
 
     setSaving(true);
     try {
-      // ⚠️ El backend actualiza name, address, phone y preferences
       await updateProfile({
         name,
         address,
@@ -77,9 +76,11 @@ export default function ProfilePage() {
       {serverError && <Alert variant="danger">{serverError}</Alert>}
 
       <div className="profile-layout">
+        
         {/* --- Formulario --- */}
         <div className="profile-form">
           <Form onSubmit={handleSave} noValidate>
+
             {/* Nombre */}
             <Form.Group className="mb-3">
               <Form.Label htmlFor="profileName">Nombre completo</Form.Label>
@@ -97,7 +98,7 @@ export default function ProfilePage() {
               </Form.Control.Feedback>
             </Form.Group>
 
-            {/* Email (solo lectura para evitar desalinearse con backend) */}
+            {/* Email */}
             <Form.Group className="mb-3">
               <Form.Label htmlFor="profileEmail">Email</Form.Label>
               <Form.Control
@@ -105,7 +106,6 @@ export default function ProfilePage() {
                 type="email"
                 value={email}
                 readOnly
-                plaintext={false}
                 disabled
               />
               <Form.Text className="text-muted">
@@ -137,6 +137,7 @@ export default function ProfilePage() {
               />
             </Form.Group>
 
+            {/* Preferencias */}
             <h5>Preferencias</h5>
             <Form.Group className="mb-2">
               <Form.Check
@@ -178,7 +179,7 @@ export default function ProfilePage() {
           </Form>
         </div>
 
-        {/* --- Resumen --- */}
+        {/* --- Resumen + BOTÓN DE PEDIDOS --- */}
         <div className="profile-summary">
           <h5>Resumen</h5>
           <p><strong>Nombre:</strong> {name}</p>
@@ -187,7 +188,17 @@ export default function ProfilePage() {
           <p><strong>Teléfono:</strong> {phone || "—"}</p>
           <p><strong>Newsletter:</strong> {newsletter ? "Sí" : "No"}</p>
           <p><strong>Promos:</strong> {promos ? "Sí" : "No"}</p>
+
+          {/* 🔥 BOTÓN NUEVO: MIS PEDIDOS */}
+          <Button
+            variant="success"
+            className="mt-3 w-100"
+            onClick={() => navigate("/perfil/pedidos")}
+          >
+            Ver mis pedidos
+          </Button>
         </div>
+
       </div>
     </div>
   );

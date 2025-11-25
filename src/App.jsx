@@ -1,9 +1,9 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { CartProvider } from './context/CartContext'; 
+import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext.jsx';
 import HeaderComponent from './components/HeaderComponent';
-import HomePages from './pages/HomePages';  
+import HomePages from './pages/HomePages';
 import ProductsPages from './pages/ProductsPages';
 import ProductDetailPage from './pages/ProductDetailPage';
 import RegisterPages from './pages/RegisterPages';
@@ -25,6 +25,8 @@ import CategoriesPages from "./pages/CategoriesPages";
 import PerfilPages from "./pages/ProfilePages";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import PurchaseResult from './pages/PurchaseResult.jsx';
+import OrderDetailPage from './pages/OrderDetailPage.jsx';
+import ProfileOrders from './pages/ProfileOrders.jsx';
 
 
 
@@ -43,8 +45,10 @@ export default function App() {
             <Route path='/registro' element={<RegisterPages />} />
             <Route path='/login' element={<LoginPages />} />
             <Route path='/pago' element={<PurchasePages />} />
-            <Route path='/purchase/result/:id' element={<PurchaseResult />} />
-            <Route path='/perfil' element={<ProtectedRoute><PerfilPages /></ProtectedRoute>} />
+            <Route path='/compra/:id' element={<PurchaseResult />} />
+            <Route path='/perfil' element={<ProtectedRoute><PerfilPages /></ProtectedRoute>} />     
+            <Route path="/perfil/pedidos" element={<ProtectedRoute><ProfileOrders /></ProtectedRoute>} />
+            <Route path="/perfil/pedidos/:id" element={<ProtectedRoute><OrderDetailPage /></ProtectedRoute>} />
             <Route path='/admin' element={<ProtectedRoute><AdminPages /></ProtectedRoute>} />
             <Route path='/admin/inventario' element={<ProtectedRoute><InventoryManagementPages /></ProtectedRoute>} />
             <Route path='/admin/ventas' element={<ProtectedRoute><MarketManagementPages /></ProtectedRoute>} />

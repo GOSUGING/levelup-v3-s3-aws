@@ -74,41 +74,37 @@ export function AuthProvider({ children }) {
   // ========================
   // LOGIN
   // ========================
-  const login = useCallback(async ({ email, password }) => {
-    setLoading(true);
-    try {
-      const data = await http("/login", {
-        method: "POST",
-        body: { email, password },
-      });
+ const login = useCallback(async ({ email, password }) => {
+  setLoading(true);
+  try {
+    const data = await http("/api/auth/login", {
+      method: "POST",
+      body: { email, password },
+    });
 
-      persist(data);
-      return data;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    persist(data);
+    return data;
+  } finally {
+    setLoading(false);
+  }
+}, []);
 
-  // ========================
-  // REGISTER
-  // ========================
-  const register = useCallback(
-    async ({ name, email, password }) => {
-      setLoading(true);
-      try {
-        const data = await http("/register", {
-          method: "POST",
-          body: { name, email, password },
-        });
+const register = useCallback(async ({ name, email, password, address, phone, role }) => {
+  setLoading(true);
+  try {
+    const data = await http("/api/auth/register", {
+      method: "POST",
+      body: { name, email, password, address, phone, role },
+    });
 
-        persist(data);
-        return data;
-      } finally {
-        setLoading(false);
-      }
-    },
-    []
-  );
+    persist(data);
+    return data;
+  } finally {
+    setLoading(false);
+  }
+}, []);
+
+
 
   // ========================
   // UPDATE PROFILE (opcional)
