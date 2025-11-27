@@ -33,6 +33,20 @@ describe('AddAdminPages', () => {
     expect(await screen.findByText(/Administrador creado correctamente/i)).toBeInTheDocument()
   })
 
+  it('limita el teléfono a 9 dígitos durante la entrada', async () => {
+    render(
+      <MemoryRouter>
+        <AddAdminPages />
+      </MemoryRouter>
+    )
+
+    const phoneInput = screen.getByPlaceholderText(/987654321/i)
+    fireEvent.change(phoneInput, { target: { value: '9876543210' } })
+    expect(phoneInput).toHaveValue('987654321')
+    fireEvent.change(phoneInput, { target: { value: '98a76b543c21' } })
+    expect(phoneInput).toHaveValue('987654321')
+  })
+
   it('tiene select de rol con opciones y limpia campos tras éxito', async () => {
     render(
       <MemoryRouter>

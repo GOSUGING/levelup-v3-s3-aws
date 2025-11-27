@@ -202,6 +202,21 @@ describe('Componentes RegisterPages', () => {
     expect(addressInput).toHaveValue('');
   });
 
+  it('Limita el teléfono a 9 dígitos durante la entrada', async () => {
+    render(
+      <MemoryRouter>
+        <AuthContext.Provider value={{ register: vi.fn() }}>
+          <RegisterPages />
+        </AuthContext.Provider>
+      </MemoryRouter>
+    );
+    const phoneInput = screen.getByLabelText(/Teléfono/i);
+    fireEvent.change(phoneInput, { target: { value: '9123456789' } });
+    expect(phoneInput).toHaveValue('912345678');
+    fireEvent.change(phoneInput, { target: { value: '9a1b2c3d4e5f6g7h8i' } });
+    expect(phoneInput).toHaveValue('912345678');
+  });
+
   /**
    * Test: Botón de registro
    * Verifica que el botón de envío del formulario exista y sea de tipo "submit".

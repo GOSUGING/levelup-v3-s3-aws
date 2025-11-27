@@ -89,8 +89,9 @@ describe('API Cart operations', () => {
       </AuthContext.Provider>
     );
 
-    await waitFor(() => {
-      expect(fetchMock).toHaveBeenCalledWith('http://localhost:8082/api/cart/123');
+    const expectedBase = import.meta.env.VITE_CART_BASEURL ?? 'http://localhost:8082'
+    return waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith(`${expectedBase}/api/cart/123`);
     });
   });
 

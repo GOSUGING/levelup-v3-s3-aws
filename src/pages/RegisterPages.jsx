@@ -52,7 +52,7 @@ function RegisterPages() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'phone') {
-      const numericValue = value.replace(/\D/g, '');
+      const numericValue = value.replace(/\D/g, '').slice(0, 9);
       setFormData((s) => ({ ...s, [name]: numericValue }));
       return;
     }
@@ -146,7 +146,7 @@ function RegisterPages() {
     });
 
     if (!validateForm()) return;
-    if (!formData.phone || formData.phone.length < 7) {
+    if (!formData.phone || formData.phone.length !== 9) {
       setError("El número de teléfono es inválido.");
       return;
     }
@@ -292,6 +292,8 @@ function RegisterPages() {
                 onChange={handleChange}
                 onBlur={() => handleBlur("phone")}
                 onKeyPress={handlePhoneKeyPress}
+                maxLength={9}
+                inputMode="numeric"
                 required
                 disabled={loading}
               />

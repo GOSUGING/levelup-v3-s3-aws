@@ -134,16 +134,18 @@ export default function AddAdminPages() {
           <Form.Control
             value={phone}
             onChange={(e) => {
-              const v = e.target.value.replace(/[^0-9]/g, "");
+              const v = e.target.value.replace(/[^0-9]/g, "").slice(0, 9);
               setPhone(v);
             }}
             disabled={loading}
-            isInvalid={phone.length < 8}
-            isValid={phone.length >= 8}
+            isInvalid={phone.length !== 9}
+            isValid={phone.length === 9}
             placeholder="Ej: 987654321"
+            maxLength={9}
+            inputMode="numeric"
           />
           <Form.Control.Feedback type="invalid">
-            Debe tener al menos 8 números
+            Debe tener 9 números
           </Form.Control.Feedback>
           <Form.Control.Feedback>Correcto ✔️</Form.Control.Feedback>
         </Form.Group>
