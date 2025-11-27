@@ -36,10 +36,10 @@ describe('LoginPages errores', () => {
     await user.click(screen.getByRole('button', { name: /iniciar sesión/i }));
 
     expect(loginMock).toHaveBeenCalled();
-    expect(await screen.findByText(/Incongruencia en los datos ingresados/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Error al iniciar sesión. Intenta nuevamente/i)).toBeInTheDocument();
   });
 
-  it('muestra mensaje de incongruencia cuando login rechaza (Failed to fetch)', async () => {
+  it('muestra mensaje de Error al iniciar sesión. Intenta nuevamente cuando login rechaza (Failed to fetch)', async () => {
     const user = userEvent.setup();
     const loginMock = vi.fn().mockRejectedValue(new Error('Failed to fetch'));
 
@@ -56,7 +56,7 @@ describe('LoginPages errores', () => {
     await user.click(screen.getByRole('button', { name: /iniciar sesión/i }));
 
     expect(loginMock).toHaveBeenCalled();
-    expect(await screen.findByText(/Incongruencia en los datos ingresados/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Error al iniciar sesión. Intenta nuevamente/i)).toBeInTheDocument();
   });
 });
 

@@ -147,6 +147,22 @@ export const CartProvider = ({ children }) => {
 
       // Modo backend
       try {
+        // Optimistic update para evitar múltiples clics superando stock
+        setCartItems((prev) => {
+          const exist = prev.find((it) => it.id === pid || it.productId === pid);
+          if (exist) {
+            return prev.map((it) =>
+              it.id === pid || it.productId === pid
+                ? { ...it, qty: Math.min((it.qty || 0) + toAdd, stock) }
+                : it
+            );
+          }
+          return [
+            ...prev,
+            { ...normalizeProduct(product), qty: toAdd },
+          ];
+        });
+
         const body = {
           productId: pid,
           name: product.name,
