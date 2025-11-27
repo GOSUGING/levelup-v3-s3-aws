@@ -90,7 +90,7 @@ describe('API Cart operations', () => {
     );
 
     await waitFor(() => {
-      expect(fetchMock).toHaveBeenCalledWith('http://localhost:8082/api/cart/123');
+      expect(fetchMock).toHaveBeenCalledWith('http://56.228.34.53:8082/api/cart/123');
     });
   });
 

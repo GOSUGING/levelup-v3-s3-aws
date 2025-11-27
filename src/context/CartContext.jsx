@@ -125,17 +125,21 @@ export const CartProvider = ({ children }) => {
       // Modo local si no hay usuario autenticado
       if (!user?.id) {
         setCartItems((prev) => {
-          // Si ya existe
-          if (current) {
+          const exist = prev.find((it) => it.id === pid || it.productId === pid);
+          const existQty = exist?.qty || 0;
+          const remain = stock - existQty;
+          if (remain <= 0) return prev;
+          const addQty = Math.min(qty, remain);
+          if (exist) {
             return prev.map((it) =>
-              it.id === pid ? { ...it, qty: it.qty + toAdd } : it
+              it.id === pid || it.productId === pid
+                ? { ...it, qty: (it.qty || 0) + addQty }
+                : it
             );
           }
-
-          // Nuevo item
           return [
             ...prev,
-            { ...normalizeProduct(product), qty: toAdd },
+            { ...normalizeProduct(product), qty: addQty },
           ];
         });
         return;

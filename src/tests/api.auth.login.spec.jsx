@@ -28,7 +28,7 @@ describe('API Auth login', () => {
 
     // Mock del contexto con la función login real
     const mockLoginUser = vi.fn().mockImplementation(async (credentials) => {
-      const response = await fetch('http://localhost:8080/api/auth/login', {
+      const response = await fetch('http://localhost:8081/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials)
@@ -56,7 +56,7 @@ describe('API Auth login', () => {
     
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledWith(
-        'http://localhost:8080/api/auth/login',
+        'http://localhost:8081/api/auth/login',
         expect.objectContaining({
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -81,7 +81,7 @@ describe('API Auth login', () => {
     });
 
     const mockLoginUser = vi.fn().mockImplementation(async (credentials) => {
-      const response = await fetch('http://localhost:8080/api/auth/login', {
+      const response = await fetch('http://56.228.34.53:8081/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials)

@@ -17,7 +17,7 @@ describe('Pruebas de ProductsPages', () => {
   it('Renderiza el título principal de la tienda', () => {
     render(
       <MemoryRouter>
-        <CartContext.Provider value={{ addToCart: () => {} }}>
+        <CartContext.Provider value={{ addToCart: () => {}, cartItems: [] }}>
           <ProductsPages />
         </CartContext.Provider>
       </MemoryRouter>
@@ -29,7 +29,7 @@ describe('Pruebas de ProductsPages', () => {
   it('Muestra al menos un producto en pantalla', async () => {
     render(
       <MemoryRouter>
-        <CartContext.Provider value={{ addToCart: () => {} }}>
+        <CartContext.Provider value={{ addToCart: () => {}, cartItems: [] }}>
           <ProductsPages />
         </CartContext.Provider>
       </MemoryRouter>
@@ -44,7 +44,7 @@ describe('Pruebas de ProductsPages', () => {
 
     render(
       <MemoryRouter>
-        <CartContext.Provider value={{ addToCart: addSpy }}>
+        <CartContext.Provider value={{ addToCart: addSpy, cartItems: [] }}>
           <ProductsPages />
         </CartContext.Provider>
       </MemoryRouter>
@@ -54,5 +54,30 @@ describe('Pruebas de ProductsPages', () => {
     await userEvent.click(addBtns[0])
 
     expect(addSpy).toHaveBeenCalledTimes(1)
+  })
+
+  it('No permite agregar más que el stock disponible desde los cards', async () => {
+    vi.resetModules()
+    vi.doMock('../api/products', () => ({
+      getProducts: vi.fn().mockResolvedValue([
+        { id: 'sd1', name: 'Steam Deck', description: 'Consola portátil', price: 399990, img: '/sd.png', category: 'consolas', stock: 1 },
+      ]),
+    }))
+    const { default: ProductsPageLocal } = await import('../pages/ProductsPages.jsx')
+    const { CartProvider } = await import('../context/CartContext.jsx')
+
+    render(
+      <MemoryRouter>
+        <CartProvider>
+          <ProductsPageLocal />
+        </CartProvider>
+      </MemoryRouter>
+    )
+
+    const btn = await screen.findByRole('button', { name: /Agregar al Carrito/i })
+    await userEvent.click(btn)
+    await screen.findByText(/Steam Deck/i)
+    await userEvent.click(btn)
+    expect(btn).toBeDisabled()
   })
 })
