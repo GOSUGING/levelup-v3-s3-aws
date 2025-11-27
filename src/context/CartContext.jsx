@@ -8,26 +8,16 @@ import {
 } from "react";
 
 import { AuthContext } from "./AuthContext";
+import { toast } from "react-toastify";
 
-// =========================
-//  CONFIG
-// =========================
 export const CartContext = createContext();
 
 const STORAGE_KEY = "levelup:cart";
 const CART_API_BASE = import.meta.env.VITE_CART_BASEURL;
 
-if (!CART_API_BASE) {
-  console.error("❌ ERROR: VITE_CART_BASEURL no está definida");
-}
-
-// Normaliza ID
+// Normalizar ID
 const getId = (p) =>
-  p?.id ??
-  p?.productId ??
-  p?._id ??
-  p?.idProducto ??
-  null;
+  p?.id ?? p?.productId ?? p?._id ?? p?.idProducto ?? null;
 
 const normalizeProduct = (p) => ({
   ...p,
@@ -35,7 +25,7 @@ const normalizeProduct = (p) => ({
   price: Number(p?.price) || 0,
 });
 
-// Mapear DTO backend → item UI
+// DTO → item UI
 const mapItemFromDto = (dto) => ({
   cartItemId: dto.id,
   id: dto.productId,
@@ -44,14 +34,12 @@ const mapItemFromDto = (dto) => ({
   price: Number(dto.price ?? 0),
   qty: dto.qty ?? 1,
   imageUrl: dto.imageUrl,
+  stock: Number(dto.stock ?? dto.available ?? dto.maxStock ?? 0),
 });
 
 const mapCartResponse = (res) =>
   Array.isArray(res.items) ? res.items.map(mapItemFromDto) : [];
 
-// =========================
-//  PROVIDER
-// =========================
 export const CartProvider = ({ children }) => {
   const { user } = useContext(AuthContext) || { user: null };
 
@@ -64,16 +52,14 @@ export const CartProvider = ({ children }) => {
     }
   });
 
-  // Guardar en localStorage siempre
+  // Guardar carrito local
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(cartItems));
     } catch {}
   }, [cartItems]);
 
-  // =========================
-  //  LOAD CART (FIXED)
-  // =========================
+  // Cargar carrito backend
   useEffect(() => {
     const loadCart = async () => {
       if (!user?.id) return;
@@ -91,57 +77,62 @@ export const CartProvider = ({ children }) => {
     loadCart();
   }, [user?.id]);
 
-  // =========================
-  //  ADD TO CART (FIX + STOCK)
-  // =========================
+  // =====================================================
+  // ADD TO CART — con stock REAL corregido
+  // =====================================================
   const addToCart = useCallback(
     async (product, qty = 1) => {
       const pid = getId(product);
       if (!pid) {
-        console.warn("Producto inválido:", product);
+        toast.error("Producto inválido");
         return;
       }
 
-      const stock = Number(product?.stock);
+      // STOCK REAL
+      const stock = Number(product?.stock ?? 0);
 
-      // 🔥 NO AGREGAR SI NO HAY STOCK
+      // ❌ SIN STOCK
       if (stock <= 0) {
-        console.warn("⛔ Producto sin stock:", product.name);
+        toast.error("❌ Este producto no tiene stock disponible.");
         return;
       }
 
-      const current = cartItems.find((it) => it.id === pid || it.productId === pid);
-      const currentQty = current?.qty || 0;
+      const current = cartItems.find(
+        (it) => it.id === pid || it.productId === pid
+      );
+
+      const currentQty = current?.qty ?? 0;
       const remaining = stock - currentQty;
 
-      // 🔥 NO PERMITIR SUPERAR STOCK
+      // ❌ NO QUEDA STOCK
       if (remaining <= 0) {
-        console.warn("⛔ Stock agotado para:", product.name);
+        toast.warn("⚠ Ya agregaste todo el stock disponible.");
         return;
       }
 
       const toAdd = Math.min(qty, remaining);
 
-      // Modo local si no hay usuario autenticado
+      // =====================================================
+      // MODO LOCAL
+      // =====================================================
       if (!user?.id) {
         setCartItems((prev) => {
-          // Si ya existe
           if (current) {
+            toast.success("🛒 Cantidad aumentada");
             return prev.map((it) =>
               it.id === pid ? { ...it, qty: it.qty + toAdd } : it
             );
           }
 
-          // Nuevo item
-          return [
-            ...prev,
-            { ...normalizeProduct(product), qty: toAdd },
-          ];
+          toast.success("🛒 Producto agregado al carrito");
+          return [...prev, { ...normalizeProduct(product), qty: toAdd }];
         });
         return;
       }
 
-      // Modo backend
+      // =====================================================
+      // MODO BACKEND
+      // =====================================================
       try {
         const body = {
           productId: pid,
@@ -164,37 +155,52 @@ export const CartProvider = ({ children }) => {
 
         const data = await res.json();
         setCartItems(mapCartResponse(data));
+        toast.success("🛒 Producto agregado");
       } catch (err) {
         console.error("Error CartService (addToCart):", err);
+        toast.error("❌ Error al agregar al carrito.");
       }
     },
     [user?.id, cartItems]
   );
 
-  // =========================
-  //  UPDATE QTY
-  // =========================
+  // =====================================================
+  // UPDATE QTY
+  // =====================================================
   const updateQty = useCallback(
     async (productId, qty) => {
-      if (!user?.id) {
-        setCartItems((prev) =>
-          qty <= 0
-            ? prev.filter((it) => it.id !== productId)
-            : prev.map((it) =>
-                it.id === productId ? { ...it, qty } : it
-              )
-        );
-        return;
-      }
-
       const item = cartItems.find(
         (it) =>
           it.id === productId ||
           it.productId === productId ||
           it.cartItemId === productId
       );
+
       if (!item) return;
 
+      // ❌ STOCK MÁXIMO
+      const maxStock = Number(item.stock ?? 0);
+      if (qty > maxStock) {
+        toast.warn("⚠ No puedes superar el stock disponible.");
+        return;
+      }
+
+      // ❌ NO PERMITIR BAJAR DE 1
+      if (qty <= 0) {
+        return removeFromCart(productId);
+      }
+
+      // MODO LOCAL
+      if (!user?.id) {
+        setCartItems((prev) =>
+          prev.map((it) =>
+            it.id === productId ? { ...it, qty } : it
+          )
+        );
+        return;
+      }
+
+      // BACKEND
       try {
         const res = await fetch(
           `${CART_API_BASE}/api/cart/${user.id}/items/${item.cartItemId}`,
@@ -215,32 +221,41 @@ export const CartProvider = ({ children }) => {
     [user?.id, cartItems]
   );
 
-  // Helpers
   const increment = useCallback(
-    (productId, step = 1) => {
+    (productId) => {
       const item = cartItems.find((it) => it.id === productId);
-      const currentQty = item?.qty || 1;
-      return updateQty(productId, currentQty + step);
+      if (!item) return;
+
+      const maxStock = Number(item.stock ?? 0);
+
+      if (item.qty >= maxStock) {
+        toast.warn("⚠ No puedes agregar más de lo disponible.");
+        return;
+      }
+
+      return updateQty(productId, item.qty + 1);
     },
     [cartItems, updateQty]
   );
 
   const decrement = useCallback(
-    (productId, step = 1) => {
+    (productId) => {
       const item = cartItems.find((it) => it.id === productId);
-      const currentQty = item?.qty || 1;
-      return updateQty(productId, currentQty - step);
+      if (!item) return;
+      return updateQty(productId, item.qty - 1);
     },
     [cartItems, updateQty]
   );
 
-  // =========================
-  //  REMOVE ITEM
-  // =========================
+  // =====================================================
+  // REMOVE ITEM
+  // =====================================================
   const removeFromCart = useCallback(
     async (productId) => {
       if (!user?.id) {
-        setCartItems((prev) => prev.filter((it) => it.id !== productId));
+        setCartItems((prev) =>
+          prev.filter((it) => it.id !== productId)
+        );
         return;
       }
 
@@ -268,9 +283,9 @@ export const CartProvider = ({ children }) => {
     [user?.id, cartItems]
   );
 
-  // =========================
-  //  CLEAR CART
-  // =========================
+  // =====================================================
+  // CLEAR CART
+  // =====================================================
   const clearCart = useCallback(async () => {
     if (!user?.id) {
       setCartItems([]);
@@ -278,10 +293,9 @@ export const CartProvider = ({ children }) => {
     }
 
     try {
-      const res = await fetch(
-        `${CART_API_BASE}/api/cart/${user.id}`,
-        { method: "DELETE" }
-      );
+      const res = await fetch(`${CART_API_BASE}/api/cart/${user.id}`, {
+        method: "DELETE",
+      });
 
       if (!res.ok) throw new Error("Error al vaciar carrito");
       const data = await res.json();
@@ -291,9 +305,9 @@ export const CartProvider = ({ children }) => {
     }
   }, [user?.id]);
 
-  // =========================
-  //  CALCULOS
-  // =========================
+  // =====================================================
+  // CÁLCULOS
+  // =====================================================
   const cartItemsCount = useMemo(
     () => cartItems.reduce((acc, it) => acc + (it.qty || 1), 0),
     [cartItems]
@@ -302,7 +316,8 @@ export const CartProvider = ({ children }) => {
   const cartSubtotal = useMemo(
     () =>
       cartItems.reduce(
-        (sum, item) => sum + (Number(item.price) || 0) * (item.qty || 1),
+        (sum, item) =>
+          sum + (Number(item.price) || 0) * (item.qty || 1),
         0
       ),
     [cartItems]
@@ -342,6 +357,7 @@ export const CartProvider = ({ children }) => {
   );
 };
 
+// Hook
 export const useCart = () => {
   const ctx = useContext(CartContext);
   if (!ctx)
