@@ -90,7 +90,7 @@ export default function PurchaseResult() {
 
   return (
     <main>
-      <div className="result-container" style={{ padding: "20px" }}>
+      <div className="result-container" style={{ padding: "20px", color: "#000" }}>
         <h2 className="text-center mb-4 animate__animated animate__fadeInDown">Compra realizada con éxito 🎉</h2>
 
         {loading && <p>Cargando...</p>}
@@ -113,7 +113,7 @@ export default function PurchaseResult() {
             {/* ENCABEZADO */}
             <div style={{ textAlign: "center", marginBottom: "20px" }}>
               <h3 style={{ marginBottom: 0 }}>BOLETA ELECTRÓNICA</h3>
-              <small style={{ color: "#777" }}>
+              <small style={{ color: "#000" }}>
                 Confirmación: <strong>{payment.id}</strong>
               </small>
             </div>
@@ -192,7 +192,7 @@ export default function PurchaseResult() {
                 <strong>Total pagado:</strong>{" "}
                 ${Number(payment.total).toLocaleString("es-CL")}
               </p>
-              <p style={{ color: "gray" }}>
+              <p style={{ color: "#000" }}>
                 Incluye IVA correspondiente
               </p>
             </div>
