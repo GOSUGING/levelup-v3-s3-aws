@@ -177,12 +177,16 @@ describe('Componentes RegisterPages', () => {
     const fechaInput = screen.getByLabelText(/Fecha de nacimiento/i);
     const passwordInput = screen.getByLabelText(/^Contraseña$/i);
     const password2Input = screen.getByLabelText(/Confirmar contraseña/i);
+    const phoneInput = screen.getByLabelText(/Teléfono/i);
+    const addressInput = screen.getByLabelText(/Dirección/i);
 
     fireEvent.change(nombreInput, { target: { value: 'Barbara Arancibia' } });
     fireEvent.change(emailInput, { target: { value: 'barbarita@gmail.com' } });
     fireEvent.change(fechaInput, { target: { value: '1999-12-08' } });
     fireEvent.change(passwordInput, { target: { value: '12345678!' } });
     fireEvent.change(password2Input, { target: { value: '12345678!' } });
+    fireEvent.change(phoneInput, { target: { value: '912345678' } });
+    fireEvent.change(addressInput, { target: { value: 'Calle Principal #123' } });
 
     fireEvent.click(screen.getByRole('button', { name: /Registrarse/i }));
 
@@ -194,6 +198,8 @@ describe('Componentes RegisterPages', () => {
     expect(fechaInput).toHaveValue('');
     expect(passwordInput).toHaveValue('');
     expect(password2Input).toHaveValue('');
+    expect(phoneInput).toHaveValue('');
+    expect(addressInput).toHaveValue('');
   });
 
   /**

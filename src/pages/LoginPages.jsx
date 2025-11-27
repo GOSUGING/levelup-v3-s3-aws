@@ -45,7 +45,7 @@ function LoginPages() {
       const dest = (r === 'ADMIN' || r === 'BODEGUERO' || r === 'VENTAS') ? "/admin" : "/perfil";
       navigate(dest);
     } catch (err) {
-      setError(err?.message || "Error al iniciar sesión. Intenta nuevamente.");
+      setError("Error al iniciar sesión. Intenta nuevamente");
     } finally {
       setLoading(false);
     }

@@ -18,6 +18,48 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
+describe('LoginPages errores', () => {
+  it('muestra mensaje de incongruencia cuando login rechaza (HTTP 500)', async () => {
+    const user = userEvent.setup();
+    const loginMock = vi.fn().mockRejectedValue(new Error('HTTP 500: error'));
+
+    render(
+      <AuthContext.Provider value={{ user: null, login: loginMock }}>
+        <MemoryRouter initialEntries={["/login"]}>
+          <LoginPages />
+        </MemoryRouter>
+      </AuthContext.Provider>
+    );
+
+    await user.type(screen.getByLabelText(/Correo electrónico/i), 'user@test.com');
+    await user.type(screen.getByLabelText(/Contraseña/i), 'abc123');
+    await user.click(screen.getByRole('button', { name: /iniciar sesión/i }));
+
+    expect(loginMock).toHaveBeenCalled();
+    expect(await screen.findByText(/Error al iniciar sesión. Intenta nuevamente/i)).toBeInTheDocument();
+  });
+
+  it('muestra mensaje de Error al iniciar sesión. Intenta nuevamente cuando login rechaza (Failed to fetch)', async () => {
+    const user = userEvent.setup();
+    const loginMock = vi.fn().mockRejectedValue(new Error('Failed to fetch'));
+
+    render(
+      <AuthContext.Provider value={{ user: null, login: loginMock }}>
+        <MemoryRouter initialEntries={["/login"]}>
+          <LoginPages />
+        </MemoryRouter>
+      </AuthContext.Provider>
+    );
+
+    await user.type(screen.getByLabelText(/Correo electrónico/i), 'user@test.com');
+    await user.type(screen.getByLabelText(/Contraseña/i), 'abc123');
+    await user.click(screen.getByRole('button', { name: /iniciar sesión/i }));
+
+    expect(loginMock).toHaveBeenCalled();
+    expect(await screen.findByText(/Error al iniciar sesión. Intenta nuevamente/i)).toBeInTheDocument();
+  });
+});
+
 // Render helper con AuthContext mockeado
 const renderWithAuth = (ui, { authValue, initialEntries = ['/login'] } = {}) =>
   render(

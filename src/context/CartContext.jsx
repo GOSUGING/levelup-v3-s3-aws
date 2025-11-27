@@ -117,15 +117,20 @@ export const CartProvider = ({ children }) => {
       // =====================================================
       if (!user?.id) {
         setCartItems((prev) => {
+          // Si ya existe
           if (current) {
-            toast.success("🛒 Cantidad aumentada");
             return prev.map((it) =>
-              it.id === pid ? { ...it, qty: it.qty + toAdd } : it
+              it.id === pid || it.productId === pid
+                ? { ...it, qty: (it.qty || 0) + addQty }
+                : it
             );
           }
 
-          toast.success("🛒 Producto agregado al carrito");
-          return [...prev, { ...normalizeProduct(product), qty: toAdd }];
+          // Nuevo item
+          return [
+            ...prev,
+            { ...normalizeProduct(product), qty: toAdd },
+          ];
         });
         return;
       }
@@ -134,6 +139,22 @@ export const CartProvider = ({ children }) => {
       // MODO BACKEND
       // =====================================================
       try {
+        // Optimistic update para evitar múltiples clics superando stock
+        setCartItems((prev) => {
+          const exist = prev.find((it) => it.id === pid || it.productId === pid);
+          if (exist) {
+            return prev.map((it) =>
+              it.id === pid || it.productId === pid
+                ? { ...it, qty: Math.min((it.qty || 0) + toAdd, stock) }
+                : it
+            );
+          }
+          return [
+            ...prev,
+            { ...normalizeProduct(product), qty: toAdd },
+          ];
+        });
+
         const body = {
           productId: pid,
           name: product.name,
