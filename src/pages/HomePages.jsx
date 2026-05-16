@@ -6,7 +6,8 @@ import { CartContext } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
 import { getProducts, getFeaturedConfig } from '../api/products';
 
-const PLACEHOLDER = "/assets/img/placeholder.png";
+const BASE = import.meta.env.BASE_URL;
+const PLACEHOLDER = `${BASE}assets/img/placeholder.png`;
 
 function HomePages() {
   const { addToCart } = useContext(CartContext);
@@ -57,7 +58,7 @@ function HomePages() {
       <div className="container">
         <Carousel>
           <Carousel.Item>
-            <img src="/assets/img/signal-5153517_1280.jpg" className="d-block w-100" alt="Gamer Zone" />
+            <img src={`${BASE}assets/img/signal-5153517_1280.jpg`} className="d-block w-100" alt="Gamer Zone" />
             <Carousel.Caption>
               <h5>Gamer Zone</h5>
               <p>Level Up: La leyenda del gaming chileno. Desde 1980, hemos equipado a generaciones de jugadores. 
@@ -66,7 +67,7 @@ function HomePages() {
             </Carousel.Caption>
           </Carousel.Item>
           <Carousel.Item>
-            <img src="/assets/img/playstation-2617305_640.jpg" className="d-block w-100" alt="Joysticks" />
+            <img src={`${BASE}assets/img/playstation-2617305_640.jpg`} className="d-block w-100" alt="Joysticks" />
             <Carousel.Caption>
               <h5>Joysticks</h5>
               <p>No somos nuevos, somos Top 1. Level Up, tu tienda de Valparaiso, se ha ganado la cima del ranking siendo el Top 1 en ventas. 
@@ -74,7 +75,7 @@ function HomePages() {
             </Carousel.Caption>
           </Carousel.Item>
           <Carousel.Item>
-            <img src="/assets/img/gaming-computer-6903836_640.jpg" className="d-block w-100" alt="Pc gamers" />
+            <img src={`${BASE}assets/img/gaming-computer-6903836_640.jpg`} className="d-block w-100" alt="Pc gamers" />
             <Carousel.Caption>
               <h5>Pc gamers</h5>
               <p>¿Necesitas el mejor loot? En Level Up, desde 1980, nuestra pasión es brindarte el mejor soporte. 
@@ -157,7 +158,7 @@ function HomePages() {
               <a href="https://as.com/meristation" target="_blank" rel="noreferrer">
                 <img
                   className="d-block w-100"
-                  src="/assets/img/099eb829-7eeb-4625-9ef8-d21636cb46a2-profile_banner-480.jpeg"
+                  src={`${BASE}assets/img/099eb829-7eeb-4625-9ef8-d21636cb46a2-profile_banner-480.jpeg`}
                   alt="Blog 1"
                 />
               </a>
@@ -166,7 +167,7 @@ function HomePages() {
               <a href="https://www.3djuegos.com" target="_blank" rel="noreferrer">
                 <img
                   className="d-block w-100"
-                  src="/assets/img/1366_521.jpeg"
+                  src={`${BASE}assets/img/1366_521.jpeg`}
                   alt="Blog 2"
                 />
               </a>
@@ -175,7 +176,7 @@ function HomePages() {
               <a href="https://www.tarreo.com" target="_blank" rel="noreferrer">
                 <img
                   className="d-block w-100"
-                  src="/assets/img/87842165034469.5ae6b780cc4bd.png"
+                  src={`${BASE}assets/img/87842165034469.5ae6b780cc4bd.png`}
                   alt="Blog 3"
                 />
               </a>
