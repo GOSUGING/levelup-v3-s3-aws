@@ -1,10 +1,10 @@
-/* ===== PROFILE PAGE - GAMING THEME ===== */
+/* ===== PROFILE PAGE — CYBERPUNK THEME ===== */
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #0d0d1a;
-  color: #f0f0ff;
+  background-color: #05050f;
+  color: #eef0ff;
   font-family: 'Orbitron', sans-serif;
 }
 
@@ -30,90 +30,118 @@ html, body {
 .profile-content {
   display: flex;
   flex-direction: row;
-  background-color: #1a1a2e;
-  border: 1px solid #2a2a4e;
-  border-radius: 16px;
+  background: rgba(20, 20, 42, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 0 40px rgba(124, 58, 237, 0.15), 0 0 80px rgba(0, 0, 0, 0.6);
+  box-shadow:
+    0 0 40px rgba(124, 58, 237, 0.1),
+    0 0 80px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
 }
 
 .profile-form {
   flex: 2;
-  background-color: #1a1a2e;
-  padding: 30px;
+  background: transparent;
+  padding: 32px;
 }
 
 .profile-summary {
   flex: 1;
-  background-color: #16213e;
-  padding: 30px;
-  border-left: 1px solid #2a2a4e;
+  background: rgba(0, 212, 255, 0.03);
+  padding: 32px;
+  border-left: 1px solid rgba(0, 212, 255, 0.1);
 }
 
-.profile-summary h6,
+.profile-summary h6 {
+  color: #00d4ff;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
+}
+
 .profile-summary p {
-  color: #a0a0c0;
+  color: #9898c8;
+  font-size: 0.88rem;
+  text-align: left;
 }
 
 .profile-form h3 {
-  color: #f0f0ff;
+  color: #eef0ff;
   font-family: 'Orbitron', sans-serif;
-  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  background: linear-gradient(135deg, #a78bfa, #00d4ff);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
 }
 
 .profile-form p,
 .profile-form label {
-  color: #a0a0c0;
+  color: #9898c8;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: left;
 }
 
 hr {
-  border-color: #2a2a4e;
+  border-color: rgba(124, 58, 237, 0.2);
 }
 
 button.btn-primary {
-  background: linear-gradient(135deg, #7c3aed, #5b21b6) !important;
+  background: linear-gradient(135deg, #7c3aed, #4f1fac) !important;
   border: none;
   font-family: 'Orbitron', sans-serif;
-  font-size: 0.8rem;
-  letter-spacing: 1px;
-  box-shadow: 0 0 12px rgba(124, 58, 237, 0.4);
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: 2px;
+  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+  box-shadow: 0 0 16px rgba(124, 58, 237, 0.5);
   transition: all 0.3s;
 }
 
 button.btn-primary:hover {
-  box-shadow: 0 0 24px rgba(124, 58, 237, 0.6) !important;
-  transform: translateY(-1px);
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.7) !important;
+  transform: translateY(-2px);
 }
 
 button.btn-danger {
-  background: linear-gradient(135deg, #ef4444, #b91c1c) !important;
+  background: linear-gradient(135deg, #dc2626, #991b1b) !important;
   border: none;
-  box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(220, 38, 38, 0.3);
   transition: all 0.3s;
 }
 
 button.btn-danger:hover {
-  box-shadow: 0 0 20px rgba(239, 68, 68, 0.5) !important;
+  box-shadow: 0 0 22px rgba(220, 38, 38, 0.5) !important;
 }
 
 .form-control {
-  background-color: #16213e !important;
-  color: #f0f0ff !important;
-  border: 1px solid #2a2a4e !important;
-  border-radius: 8px;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #eef0ff !important;
+  border: 1px solid rgba(124, 58, 237, 0.25) !important;
+  border-radius: 2px;
+  transition: all 0.3s;
 }
 
 .form-control:focus {
-  background-color: #16213e !important;
-  border-color: #7c3aed !important;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.3) !important;
-  color: #f0f0ff !important;
+  background: rgba(0, 212, 255, 0.04) !important;
+  border-color: #00d4ff !important;
+  box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2), 0 0 20px rgba(0, 212, 255, 0.08) !important;
+  color: #eef0ff !important;
 }
 
 .form-control::placeholder {
-  color: #6666aa !important;
+  color: #55557a !important;
 }
