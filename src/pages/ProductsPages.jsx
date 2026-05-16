@@ -5,7 +5,8 @@ import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { getProducts } from '../api/products';
 
 const CATEGORIES = ['consolas', 'juegos', 'accesorios', 'ropa'];
-const PLACEHOLDER = "/assets/img/placeholder.png";
+const BASE = import.meta.env.BASE_URL;
+const PLACEHOLDER = `${BASE}assets/img/placeholder.png`;
 
 export default function ProductsPages() {
   const { addToCart, cartItems } = useContext(CartContext);
@@ -65,8 +66,30 @@ export default function ProductsPages() {
         </Link>
       </div>
 
+      {error && (
+        <div style={{
+          background: 'rgba(239,68,68,0.1)',
+          border: '1px solid #ef4444',
+          borderRadius: '10px',
+          padding: '20px',
+          textAlign: 'center',
+          marginBottom: '24px',
+          color: '#fca5a5'
+        }}>
+          <div style={{ fontSize: '2rem', marginBottom: '8px' }}>⚠️</div>
+          <strong style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '1rem' }}>API no conectada</strong>
+          <p style={{ margin: '6px 0 0', color: '#f87171', fontSize: '0.9rem' }}>
+            El servidor de productos no está disponible en este momento.
+          </p>
+        </div>
+      )}
+
+      {loading && (
+        <p className="text-center" style={{ color: '#a0a0c0' }}>Cargando productos...</p>
+      )}
+
       <Row>
-        {productosFiltrados.length > 0 ? (
+        {!loading && !error && productosFiltrados.length > 0 ? (
           productosFiltrados.map((product) => {
             const stock = Number(product?.stock ?? Infinity);
             const cartItem = cartItems.find(
@@ -165,9 +188,11 @@ export default function ProductsPages() {
             );
           })
         ) : (
-          <p className="text-center">
-            No hay productos en esta categoría.
-          </p>
+          !loading && !error && (
+            <p className="text-center" style={{ color: '#a0a0c0' }}>
+              No hay productos en esta categoría.
+            </p>
+          )
         )}
       </Row>
     </Container>

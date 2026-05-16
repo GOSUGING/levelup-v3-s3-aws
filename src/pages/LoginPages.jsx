@@ -53,8 +53,37 @@ function LoginPages() {
 
   return (
     <Container className="main-container d-flex align-items-center justify-content-center">
-      <div className="form-container shadow p-4 rounded bg-dark text-light" style={{ maxWidth: "420px", width: "100%" }}>
-        <h3 className="text-center mb-4">Iniciar Sesión</h3>
+      <div className="form-container shadow p-4 rounded" style={{
+        maxWidth: "420px",
+        width: "100%",
+        backgroundColor: "var(--bg-secondary, #1a1a2e)",
+        border: "1px solid var(--border, #2a2a4e)",
+        borderRadius: "12px"
+      }}>
+        <h3 className="text-center mb-3" style={{ fontFamily: "Orbitron, sans-serif", color: "#f0f0ff" }}>
+          Iniciar Sesión
+        </h3>
+
+        <div style={{
+          background: 'rgba(245,158,11,0.1)',
+          border: '1px solid #f59e0b',
+          borderRadius: '8px',
+          padding: '12px 16px',
+          marginBottom: '16px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px'
+        }}>
+          <span style={{ fontSize: '1.2rem' }}>🔌</span>
+          <div>
+            <strong style={{ color: '#fcd34d', fontFamily: 'Orbitron, sans-serif', fontSize: '0.75rem' }}>
+              API no conectada
+            </strong>
+            <p style={{ margin: 0, color: '#fbbf24', fontSize: '0.8rem', textAlign: 'left' }}>
+              El servidor de autenticación no está disponible.
+            </p>
+          </div>
+        </div>
 
         {error && <Alert variant="danger">{error}</Alert>}
 

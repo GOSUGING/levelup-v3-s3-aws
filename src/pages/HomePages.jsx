@@ -88,7 +88,23 @@ function HomePages() {
         <div className="mb-5">
           <h2 className="text-center mb-4">{featuredTitle}</h2>
           {errorFeatured && (
-            <p className="text-center" style={{color:'red'}}>⚠ {errorFeatured}</p>
+            <div style={{
+              background: 'rgba(239,68,68,0.1)',
+              border: '1px solid #ef4444',
+              borderRadius: '10px',
+              padding: '16px 20px',
+              textAlign: 'center',
+              marginBottom: '16px',
+              color: '#fca5a5'
+            }}>
+              <span style={{ fontSize: '1.5rem' }}>⚠️</span>
+              <strong style={{ display: 'block', fontFamily: 'Orbitron, sans-serif', fontSize: '0.9rem', margin: '6px 0 4px' }}>
+                API no conectada
+              </strong>
+              <span style={{ fontSize: '0.85rem', color: '#f87171' }}>
+                El servidor de productos no está disponible en este momento.
+              </span>
+            </div>
           )}
           <Row className="g-3">
             {loadingFeatured ? (
