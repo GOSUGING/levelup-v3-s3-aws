@@ -382,6 +382,27 @@ footer {
   color: var(--text-muted);
 }
 
+/* ===== GLOW ANIMATIONS ===== */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 12px var(--accent-glow); }
+  50% { box-shadow: 0 0 28px var(--accent-glow), 0 0 48px rgba(124, 58, 237, 0.2); }
+}
+
+@keyframes neon-flicker {
+  0%, 95%, 100% { opacity: 1; }
+  96% { opacity: 0.85; }
+  97% { opacity: 1; }
+  98% { opacity: 0.9; }
+}
+
+.navbar-brand {
+  animation: neon-flicker 6s infinite;
+}
+
+.btn-custom, .btn-primary {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
 /* ===== SELECTION ===== */
 ::selection {
   background: var(--accent);
