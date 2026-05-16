@@ -1,9 +1,10 @@
+/* ===== PROFILE PAGE - GAMING THEME ===== */
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #27374D;
-  color: #DDE6ED;
+  background-color: #0d0d1a;
+  color: #f0f0ff;
   font-family: 'Orbitron', sans-serif;
 }
 
@@ -29,73 +30,90 @@ html, body {
 .profile-content {
   display: flex;
   flex-direction: row;
-  background-color: #9DB2BF;
-  border: 1px solid #526D82;
+  background-color: #1a1a2e;
+  border: 1px solid #2a2a4e;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 40px rgba(124, 58, 237, 0.15), 0 0 80px rgba(0, 0, 0, 0.6);
 }
 
 .profile-form {
   flex: 2;
-  background-color: #9DB2BF;
+  background-color: #1a1a2e;
   padding: 30px;
 }
 
 .profile-summary {
   flex: 1;
-  background-color: #9DB2BF;
+  background-color: #16213e;
   padding: 30px;
-}
-
-.profile-summary {
-  flex: 1;
-  background-color: #9DB2BF;
-  padding: 30px;
-  border-left: 1px solid #526D82;
+  border-left: 1px solid #2a2a4e;
 }
 
 .profile-summary h6,
-.profile-summary p,
-.profile-form h3,
+.profile-summary p {
+  color: #a0a0c0;
+}
+
+.profile-form h3 {
+  color: #f0f0ff;
+  font-family: 'Orbitron', sans-serif;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .profile-form p,
 .profile-form label {
-  color: #526D82;
+  color: #a0a0c0;
 }
 
 hr {
-  border-color: #526D82;
+  border-color: #2a2a4e;
 }
 
 button.btn-primary {
-  background-color: #1e88e5;
+  background: linear-gradient(135deg, #7c3aed, #5b21b6) !important;
   border: none;
-  transition: background 0.3s;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.4);
+  transition: all 0.3s;
 }
 
 button.btn-primary:hover {
-  background-color: #1565c0;
+  box-shadow: 0 0 24px rgba(124, 58, 237, 0.6) !important;
+  transform: translateY(-1px);
 }
 
 button.btn-danger {
-  background-color: #e53935;
+  background: linear-gradient(135deg, #ef4444, #b91c1c) !important;
   border: none;
-  transition: background 0.3s;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+  transition: all 0.3s;
 }
 
 button.btn-danger:hover {
-  background-color: #c62828;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.5) !important;
 }
 
 .form-control {
-  background-color: #9DB2BF;
-  color: #526D82;
-  border: 1px solid #526D82;
+  background-color: #16213e !important;
+  color: #f0f0ff !important;
+  border: 1px solid #2a2a4e !important;
+  border-radius: 8px;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .form-control:focus {
-  background-color: #9DB2BF;
-  border-color: #1e88e5;
-  box-shadow: none;
-  color: #526D82;
+  background-color: #16213e !important;
+  border-color: #7c3aed !important;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.3) !important;
+  color: #f0f0ff !important;
+}
+
+.form-control::placeholder {
+  color: #6666aa !important;
 }
